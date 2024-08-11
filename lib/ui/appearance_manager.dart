@@ -207,8 +207,8 @@ class AppearanceManager {
       unselectedWidgetColor: color.main,
       disabledColor: color.disabled,
       textTheme: TextTheme(
-        bodyText1: TextStyle(),
-        bodyText2: TextStyle(),
+        bodyLarge: TextStyle(),
+        bodyMedium: TextStyle(),
       ).apply(
         bodyColor: color.text,
       ),
@@ -245,11 +245,11 @@ class AppearanceManager {
       ),
       buttonTheme: ButtonThemeData(),
       textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(primary: color.main),
+        style: TextButton.styleFrom(foregroundColor: color.main),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          primary: color.main,
+          backgroundColor: color.main,
           shadowColor: Colors.grey.shade300,
           shape: new RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),

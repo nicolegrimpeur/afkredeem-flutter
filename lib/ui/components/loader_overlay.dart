@@ -26,7 +26,7 @@ class LoaderOverlay {
         ),
       ),
     );
-    Overlay.of(context)!.insert(overlayEntry!);
+    Overlay.of(context).insert(overlayEntry!);
   }
 
   static void hide({Duration? delay}) {

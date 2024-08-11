@@ -23,7 +23,7 @@ Widget disclosureDialog(BuildContext context) {
               children: [
                 TextSpan(
                   text: 'AFK Redeem is a fan-app and is not affiliated with ',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 TextSpan(
                   text: 'Lilith Games',
@@ -31,18 +31,18 @@ Widget disclosureDialog(BuildContext context) {
                 ),
                 TextSpan(
                   text: ' in any way.',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 TextSpan(text: '\n\n'),
                 TextSpan(
                   text:
                       'This app anonymously collects basic analytics & crash reports.',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 TextSpan(text: '\n\n'),
                 TextSpan(
                   text: 'For more information visit the github project.',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ],
             ),

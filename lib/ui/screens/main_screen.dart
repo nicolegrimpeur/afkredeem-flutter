@@ -203,7 +203,7 @@ class _MainScreenState extends State<MainScreen>
         ),
       ),
     );
-    Overlay.of(context)!.insert(overlayEntry);
+    Overlay.of(context).insert(overlayEntry);
     Future.delayed(duration ?? Duration(seconds: 5))
         .then((value) => overlayEntry.remove());
     return true;
@@ -325,8 +325,8 @@ class _MainScreenState extends State<MainScreen>
               data: Theme.of(context).copyWith(
                 canvasColor: AppearanceManager().color.background,
                 textTheme: TextTheme(
-                  bodyText1: TextStyle(),
-                  bodyText2: TextStyle(),
+                  bodyLarge: TextStyle(),
+                  bodyMedium: TextStyle(),
                 ).apply(
                   bodyColor: AppearanceManager().color.text,
                 ),

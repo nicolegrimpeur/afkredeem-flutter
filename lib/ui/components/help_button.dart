@@ -9,7 +9,7 @@ Widget helpButton({required Function() onPressed}) {
     child: TextButton(
       style: ElevatedButton.styleFrom(
         shape: CircleBorder(),
-        primary: AppearanceManager().color.main.withOpacity(0.2),
+        backgroundColor: AppearanceManager().color.main.withOpacity(0.2),
       ),
       onPressed: onPressed,
       child: Text(
