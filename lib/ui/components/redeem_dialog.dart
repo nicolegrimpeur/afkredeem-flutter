@@ -19,7 +19,6 @@ import 'package:afk_redeem/data/account_redeem_summary.dart';
 import 'package:afk_redeem/data/error_reporter.dart';
 import 'package:afk_redeem/ui/appearance_manager.dart';
 import 'package:afk_redeem/ui/components/help_button.dart';
-import 'package:afk_redeem/ui/components/html_renderer.dart';
 import 'package:afk_redeem/ui/components/carousel_dialog.dart';
 
 enum RedeemDialogState {
@@ -288,129 +287,88 @@ class _RedeemDialogState extends State<RedeemDialog> {
   );
 
   Widget _apiVersionNotSupportedDialog() {
-    return FutureBuilder<String?>(
-      future: HtmlRenderer.getHtml(
-        context: context,
-        uri: kFlutterHtmlUri.redeemNotSupported,
-        afkRedeemApi: widget.afkRedeemApi,
-      ),
-      builder: (BuildContext context, AsyncSnapshot<String?> htmlSnapshot) {
-        Widget? htmlWidget;
-        String? html;
-        if (!htmlSnapshot.hasData) {
-          htmlWidget = loadingWidget;
-        } else {
-          html = htmlSnapshot.data!;
-          htmlWidget = HtmlRenderer.tryRender(context, html);
-          if (htmlWidget == null) {
-            htmlWidget = Container(
-              child: Text(
-                  'Unfortunately, Lilith Games changed their Redeem API,\n\n'
-                  'so the app is unable to redeem codes until an update is issued.\n\n'
-                  'We are working on it, and will update this message when an upgrade is available.'
-                  'we\'ve put everything in the clipboard for your convenience.'),
-            );
-          }
-        }
-        return AlertDialog(
-          title: Text(HtmlRenderer.getTitle(html) ?? 'Oh no  😕'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              htmlWidget,
-              SizedBox(
-                height: 15.0,
-              ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context); // pop this dialog
-                    String? buttonLink =
-                        HtmlRenderer.lastRenderButtonLinks['Web Redeem'];
-                    if (buttonLink != null) {
-                      launch(buttonLink);
-                    }
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(CupertinoIcons.globe),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text(
-                        'Web Redeem',
-                        style: TextStyle(fontSize: 16.0),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+    return AlertDialog(
+      title: Text('Oh no 😕'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            // TODO: revérifier le texte
+            child: Text(
+            'Unfortunately, Lilith Games changed their Redeem API,\n\n'
+            'so the app is unable to redeem codes until an update is issued.\n\n'
+            'We are working on it, and will update this message when an upgrade is available.'
+            'we\'ve put everything in the clipboard for your convenience.'),
           ),
-        );
-      },
+          SizedBox(
+            height: 15.0,
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // pop this dialog
+                String? buttonLink = kLinks.lilithReferer;
+                launch(buttonLink);
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(CupertinoIcons.globe),
+                  SizedBox(
+                    width: 5.0,
+                  ),
+                  Text(
+                    'Web Redeem',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
-  }
+}
 
   Widget _suggestVersionUpgradeDialog() {
-    return FutureBuilder<String?>(
-      future: HtmlRenderer.getHtml(
-        context: context,
-        uri: kFlutterHtmlUri.upgradeApp,
-        afkRedeemApi: widget.afkRedeemApi,
-      ),
-      builder: (BuildContext context, AsyncSnapshot<String?> htmlSnapshot) {
-        Widget? htmlWidget;
-        String? html;
-        if (!htmlSnapshot.hasData) {
-          htmlWidget = loadingWidget;
-        } else {
-          html = htmlSnapshot.data!;
-          htmlWidget = HtmlRenderer.tryRender(context, html);
-          if (htmlWidget == null) {
-            htmlWidget = Container(
-              child: Text(
-                  'It appears that Lilith Games changed their Redeem API.\n\n'
-                  'The good news is that our latest app version supports it.\n\n'
-                  'Upgrade in order to redeem directly from the app.'),
-            );
-          }
-        }
-        return AlertDialog(
-          title: Text(HtmlRenderer.getTitle(html) ?? 'Upgrade Required'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              htmlWidget,
-              SizedBox(
-                height: 15.0,
-              ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context); // pop this dialog
-                    launch(kLinks.storeLink);
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(CupertinoIcons.square_arrow_up_on_square),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text(
-                        'Upgrade',
-                        style: TextStyle(fontSize: 16.0),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+    return AlertDialog(
+      title: Text('Upgrade Required'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            // TODO: refaire le texte
+            child: Text(
+            'It appears that we are unable to connect to afkredeem.com and update with the latest codes.\n\n'
+            'This happens sometimes upon first connection (since afkredeem.com\'s authentication keys are not yet recognized everywhere).\n\n'
+            'Try switching your wifi network (or change wifi <-> cellular connection) and retry (pull down for update).'),
           ),
-        );
-      },
+          SizedBox(
+            height: 15.0,
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // pop this dialog
+                launch(kLinks.storeLink);
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(CupertinoIcons.square_arrow_up_on_square),
+                  SizedBox(
+                    width: 5.0,
+                  ),
+                  Text(
+                    'Upgrade',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

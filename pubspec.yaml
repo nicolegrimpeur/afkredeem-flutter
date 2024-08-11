@@ -19,9 +19,8 @@ dependencies:
   dio: ^4.0.0
   dio_cookie_manager: ^2.0.0
   animated_text_kit: ^4.2.1
-  carousel_slider: ^4.0.0
+  carousel_slider: ^4.2.1
   bubble: ^1.2.1
-  flutter_html: ^2.1.1
   device_apps: ^2.1.1
   package_info: ^2.0.2
   flutter_animation_progress_bar: ^2.0.1

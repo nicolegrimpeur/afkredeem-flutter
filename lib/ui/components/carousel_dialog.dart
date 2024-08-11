@@ -26,8 +26,10 @@ class CarouselViewer extends StatefulWidget {
 }
 
 class _CarouselViewerState extends State<CarouselViewer> {
-  final CarouselController _controller = CarouselController();
+  // TODO: implement controller
+  // final CarouselSliderController _controller = CarouselSliderController();
   int _current = 0;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,7 +39,7 @@ class _CarouselViewerState extends State<CarouselViewer> {
         Expanded(
           child: CarouselSlider(
             items: widget.items,
-            carouselController: _controller,
+            // carouselController: _controller,
             options: CarouselOptions(
                 height: widget.height,
                 viewportFraction: 0.95,
@@ -57,7 +59,7 @@ class _CarouselViewerState extends State<CarouselViewer> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: widget.items.asMap().entries.map((entry) {
               return GestureDetector(
-                onTap: () => _controller.animateToPage(entry.key),
+                // onTap: () => _controller.animateToPage(entry.key),
                 child: Container(
                   width: 12.0,
                   height: 12.0,

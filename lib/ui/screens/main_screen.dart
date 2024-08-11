@@ -14,7 +14,6 @@ import 'package:afk_redeem/data/redemption_code.dart';
 import 'package:afk_redeem/data/services/afk_redeem_api.dart';
 import 'package:afk_redeem/data/user_message.dart';
 import 'package:afk_redeem/data/account_redeem_summary.dart';
-import 'package:afk_redeem/ui/components/html_renderer.dart';
 import 'package:afk_redeem/ui/components/about_dialog.dart';
 import 'package:afk_redeem/ui/components/disclosure_dialog.dart';
 import 'package:afk_redeem/ui/components/help_button.dart';
@@ -59,11 +58,6 @@ class _MainScreenState extends State<MainScreen>
   );
   double _brutusHeight = BASE_BRUTUS_HEIGHT;
   GlobalKey _brutusKey = GlobalObjectKey('brutus');
-  late Future<String?> _drawerLinks = HtmlRenderer.getHtml(
-    context: context,
-    uri: kFlutterHtmlUri.drawer,
-    afkRedeemApi: _afkRedeemApi,
-  );
   bool newerVersionMessageShown = false;
 
   @override
@@ -484,7 +478,7 @@ class _MainScreenState extends State<MainScreen>
                                     ],
                                   ),
                                   if (_canFetchHtmlPages)
-                                    drawerLinks(context, _drawerLinks),
+                                    drawerLinks(context),
                                   Padding(
                                     padding:
                                         const EdgeInsets.only(bottom: 10.0),

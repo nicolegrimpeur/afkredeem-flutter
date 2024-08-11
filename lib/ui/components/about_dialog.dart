@@ -4,26 +4,16 @@ import 'package:flutter/material.dart';
 
 import 'package:afk_redeem/ui/appearance_manager.dart';
 import 'package:afk_redeem/ui/image_manager.dart';
-import 'package:afk_redeem/ui/components/html_renderer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Future<AlertDialog> aboutDialog(
     BuildContext context, AfkRedeemApi afkRedeemApi) async {
-  String? html = await HtmlRenderer.getHtml(
-    context: context,
-    uri: kFlutterHtmlUri.about,
-    afkRedeemApi: afkRedeemApi,
-    showLoadingOverlay: true,
-  );
   return AlertDialog(
-    title: Text(HtmlRenderer.getTitle(html) ?? 'About'),
+    title: Text('About'),
     content: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        HtmlRenderer.tryRender(context, html) ??
-            Text(
-              'It appears there\'s a connection problem',
-              style: TextStyle(color: AppearanceManager().color.red),
-            ),
+        Text("About text"),
         SizedBox(
           height: 40.0,
         ),
