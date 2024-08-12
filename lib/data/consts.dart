@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 
 const kRedeemApiVersion = 1;
 
-const kConnectTimeoutMilli = 5000;
-const kReceiveTimeoutMilli = 3000;
+const kConnectTimeoutMilli = Duration(seconds: 5);
+const kReceiveTimeoutMilli = Duration(seconds: 3);
 
 const kMinPasteManualRedemptionCodeLength = 5;
 const kMaxPasteManualRedemptionCodeLength = 15;
@@ -90,9 +90,9 @@ mixin kFlutterHtmlUri {
   static const String upgradeApp = 'flutter_html/general/redeem_upgrade.html';
 }
 
-bool shouldReportDioError(DioError ex) {
+bool shouldReportDioError(DioException ex) {
   // report if not timeout & not ssl handshake error (CERTIFICATE_VERIFY_FAILED)
   // since can occur for the first time (especially for new afkredeem.com domain)
   // in private limited networks (work, school, etc.)
-  return ex.type != DioErrorType.connectTimeout && !(ex is HandshakeException);
+  return ex.type != DioExceptionType.connectionTimeout && !(ex is HandshakeException);
 }

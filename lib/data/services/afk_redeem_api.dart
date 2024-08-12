@@ -40,7 +40,7 @@ class AfkRedeemApi {
         ),
       );
       return response.data;
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       userErrorHandler(UserMessage.connectionFailed);
       if (shouldReportDioError(ex)) {
         ErrorReporter.report(ex, 'Connection failed to $url');
@@ -54,9 +54,9 @@ class AfkRedeemApi {
   Future<void> update() async {
     try {
       await _update();
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       userErrorHandler(UserMessage.connectionFailed);
-      if (ex.type != DioErrorType.connectTimeout) {
+      if (ex.type != DioExceptionType.connectionTimeout) {
         ErrorReporter.report(
             ex, 'Connection failed to ${kLinks.afkRedeemApiUrl}');
       }

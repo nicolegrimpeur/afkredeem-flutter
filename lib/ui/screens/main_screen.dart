@@ -16,7 +16,7 @@ import 'package:afk_redeem/data/user_message.dart';
 import 'package:afk_redeem/data/account_redeem_summary.dart';
 import 'package:afk_redeem/ui/components/about_dialog.dart';
 import 'package:afk_redeem/ui/components/disclosure_dialog.dart';
-import 'package:afk_redeem/ui/components/help_button.dart';
+// import 'package:afk_redeem/ui/components/help_button.dart';
 import 'package:afk_redeem/ui/image_manager.dart';
 import 'package:afk_redeem/ui/appearance_manager.dart';
 import 'package:afk_redeem/ui/components/redemption_code_card.dart';
@@ -402,15 +402,16 @@ class _MainScreenState extends State<MainScreen>
                                                 },
                                               ),
                                               trailing: _userIdEmpty
-                                                  ? carouselDialogHelpButton(
-                                                      context: context,
-                                                      carouselItems: [
-                                                        Image.asset(
-                                                            'images/game_screenshots/player.jpg'),
-                                                        Image.asset(
-                                                            'images/game_screenshots/details.jpg'),
-                                                      ],
-                                                    )
+                                                  ? Text('Carousel')
+                                                  // ? carouselDialogHelpButton(
+                                                  //     context: context,
+                                                  //     carouselItems: [
+                                                  //       Image.asset(
+                                                  //           'images/game_screenshots/player.jpg'),
+                                                  //       Image.asset(
+                                                  //           'images/game_screenshots/details.jpg'),
+                                                  //     ],
+                                                  //   )
                                                   : SizedBox(width: 25.0),
                                             ),
                                           ],

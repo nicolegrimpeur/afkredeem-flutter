@@ -20,7 +20,7 @@ class FrequencyException implements Exception {}
 
 class RedeemHandlers {
   Function() redeemRunningHandler;
-  Function(int, int, String) progressHandler;
+  Function(double, int, String) progressHandler;
   Function(List<AccountInfo> accounts) accountSelectionHandler;
   RedeemSummaryFunction redeemCompletedHandler;
   UserErrorHandler userErrorHandler;
@@ -42,7 +42,7 @@ class CodeRedeemer {
   RedeemHandlers handlers;
   int userAccounts = 0;
   int codesRedeemed = 0;
-  int progress = 0;
+  double progress = 0;
   Dio _dio = Dio();
   CookieJar _cookieJar = CookieJar();
   late JsonReader accountsJsonReader;
@@ -63,7 +63,7 @@ class CodeRedeemer {
     handlers.redeemRunningHandler();
     try {
       await _redeem();
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       handlers.userErrorHandler(UserMessage.connectionFailed);
       if (shouldReportDioError(ex)) {
         ErrorReporter.report(
@@ -283,7 +283,7 @@ class CodeRedeemer {
     if (userAccounts != 0) {
       codesRedeemedCrossAccounts = (codesRedeemed / userAccounts).round();
       progress =
-          (100 * codesRedeemedCrossAccounts / redemptionCodes.length).round();
+          (100 * codesRedeemedCrossAccounts / redemptionCodes.length).round() as double;
       if (codesRedeemed % userAccounts == 0 && progress != 100) {
         codesRedeemedMessage = '⏳ Redeem frequency limit';
       }

@@ -16,10 +16,10 @@ import 'package:afk_redeem/data/user_message.dart';
 import 'package:afk_redeem/data/preferences.dart';
 import 'package:afk_redeem/data/services/afk_redeem_api.dart';
 import 'package:afk_redeem/data/account_redeem_summary.dart';
-import 'package:afk_redeem/data/error_reporter.dart';
+// import 'package:afk_redeem/data/error_reporter.dart';
 import 'package:afk_redeem/ui/appearance_manager.dart';
 import 'package:afk_redeem/ui/components/help_button.dart';
-import 'package:afk_redeem/ui/components/carousel_dialog.dart';
+// import 'package:afk_redeem/ui/components/carousel_dialog.dart';
 
 enum RedeemDialogState {
   fillForm,
@@ -64,7 +64,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
   TextEditingController verificationCodeController = TextEditingController();
   final tooltipKey = GlobalKey<State<Tooltip>>();
 
-  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static final AdRequest adRequest = AdRequest(
     keywords: kAdsKeywords,
     nonPersonalizedAds: true,
@@ -90,7 +90,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
   AccountInfo? selectedAccount;
   List<AccountRedeemSummary> accountRedeemSummaries = [];
   UserMessage? errorMessage;
-  int progress = 0;
+  double progress = 0;
   int codesRedeemed = 0;
   String progressMessage = "";
   bool selectAccount = false;
@@ -130,7 +130,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
     });
   }
 
-  void _progressUpdate(int progress, int codesRedeemed, String message) async {
+  void _progressUpdate(double progress, int codesRedeemed, String message) async {
     setState(() {
       this.progress = progress;
       this.codesRedeemed = codesRedeemed;
@@ -226,14 +226,15 @@ class _RedeemDialogState extends State<RedeemDialog> {
   );
 
   Widget _verificationCodeCarouselDialogButton() {
-    return carouselDialogHelpButton(
-      context: context,
-      carouselItems: [
-        Image.asset('images/game_screenshots/player.jpg'),
-        Image.asset('images/game_screenshots/game_settings.jpg'),
-        Image.asset('images/game_screenshots/verification_code.jpg'),
-      ],
-    );
+    return Text("Carousel");
+    // return carouselDialogHelpButton(
+    //   context: context,
+    //   carouselItems: [
+    //     Image.asset('images/game_screenshots/player.jpg'),
+    //     Image.asset('images/game_screenshots/game_settings.jpg'),
+    //     Image.asset('images/game_screenshots/verification_code.jpg'),
+    //   ],
+    // );
   }
 
   late AccountRedeemStrategy accountRedeemStrategy = isManualRedeem
@@ -737,147 +738,149 @@ class _RedeemDialogState extends State<RedeemDialog> {
         width: width,
         padding: EdgeInsets.zero,
         margin: EdgeInsets.zero,
-        child: CarouselViewer(
-          accountRedeemSummaries
-              .map((AccountRedeemSummary accountRedeemSummary) {
-            bool shouldAddReportNotFoundExpiredButton = !isManualRedeem &&
-                (accountRedeemSummary.notFoundCodes.isNotEmpty ||
-                    accountRedeemSummary.expiredCodes.isNotEmpty);
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Center(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minWidth: width * 2 / 3,
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        color:
-                            AppearanceManager().color.dialogBackgroundOverlay,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            accountRedeemSummary.account.username,
-                            style: TextStyle(
-                              color: AppearanceManager().color.main,
-                              fontSize: 17.0,
-                            ),
-                          ),
-                          if (accountRedeemSummaries.length > 1)
-                            Text(
-                              'S${accountRedeemSummary.account.server}',
-                              style: TextStyle(
-                                color: AppearanceManager().color.dialogText,
-                                fontSize: 14.0,
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Column(
-                    children: [
-                      _codesList(accountRedeemSummary.redeemedCodes, 'Redeemed',
-                          AppearanceManager().color.green),
-                      _codesList(accountRedeemSummary.usedCodes, 'already used',
-                          AppearanceManager().color.yellow),
-                      Row(
-                        mainAxisAlignment: shouldAddReportNotFoundExpiredButton
-                            ? MainAxisAlignment.spaceBetween
-                            : MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            children: [
-                              _codesList(
-                                  accountRedeemSummary.knownExpiredCodes +
-                                      accountRedeemSummary.expiredCodes,
-                                  'expired',
-                                  AppearanceManager().color.red),
-                              _codesList(accountRedeemSummary.notFoundCodes,
-                                  'not found', AppearanceManager().color.red),
-                            ],
-                          ),
-                          if (shouldAddReportNotFoundExpiredButton)
-                            ElevatedButton.icon(
-                              onPressed: () async {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    AppearanceManager().snackBarStr(
-                                        'Thank you!',
-                                        duration: Duration(seconds: 2)));
-                                if (hasAlreadyReported) {
-                                  return;
-                                }
-                                String error = '';
-                                if (accountRedeemSummary
-                                    .notFoundCodes.isNotEmpty) {
-                                  error +=
-                                      'not found codes: ${accountRedeemSummary.notFoundCodes} ';
-                                }
-                                if (accountRedeemSummary
-                                    .expiredCodes.isNotEmpty) {
-                                  error +=
-                                      'expired codes: ${accountRedeemSummary.expiredCodes}';
-                                }
-                                ErrorReporter.report(
-                                    Exception('Bad redemption codes'), error);
-                                hasAlreadyReported = true;
-                              },
-                              icon: Icon(
-                                CupertinoIcons
-                                    .arrowshape_turn_up_right_circle_fill,
-                              ),
-                              label: Text('report'),
-                            ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Center(
-                  child: Column(
-                    children: [
-                      if (accountRedeemSummary.redeemedCodes.isNotEmpty)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              CupertinoIcons.gift,
-                              color: AppearanceManager().color.main,
-                              size: 20.0,
-                            ),
-                            SizedBox(width: 15.0),
-                            Icon(
-                              CupertinoIcons.gift,
-                              color: AppearanceManager().color.main,
-                              size: 20.0,
-                            ),
-                            SizedBox(width: 15.0),
-                            Icon(
-                              CupertinoIcons.gift,
-                              color: AppearanceManager().color.main,
-                              size: 20.0,
-                            ),
-                          ],
-                        ),
-                      SizedBox(
-                        height: 15.0,
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            );
-          }).toList(),
-          aspectRatio: width / height,
-        ),
+        child: Text('Carousel'),
+          //   CarouselViewer(
+          // accountRedeemSummaries
+          //     .map((AccountRedeemSummary accountRedeemSummary) {
+          //   bool shouldAddReportNotFoundExpiredButton = !isManualRedeem &&
+          //       (accountRedeemSummary.notFoundCodes.isNotEmpty ||
+          //           accountRedeemSummary.expiredCodes.isNotEmpty);
+          //   return Column(
+          //   return Column(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Center(
+          //         child: ConstrainedBox(
+          //           constraints: BoxConstraints(
+          //             minWidth: width * 2 / 3,
+          //           ),
+          //           child: Container(
+          //             padding: EdgeInsets.all(10.0),
+          //             decoration: BoxDecoration(
+          //               color:
+          //                   AppearanceManager().color.dialogBackgroundOverlay,
+          //               borderRadius: BorderRadius.circular(10),
+          //             ),
+          //             child: Column(
+          //               mainAxisAlignment: MainAxisAlignment.center,
+          //               children: [
+          //                 Text(
+          //                   accountRedeemSummary.account.username,
+          //                   style: TextStyle(
+          //                     color: AppearanceManager().color.main,
+          //                     fontSize: 17.0,
+          //                   ),
+          //                 ),
+          //                 if (accountRedeemSummaries.length > 1)
+          //                   Text(
+          //                     'S${accountRedeemSummary.account.server}',
+          //                     style: TextStyle(
+          //                       color: AppearanceManager().color.dialogText,
+          //                       fontSize: 14.0,
+          //                     ),
+          //                   ),
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //       Padding(
+          //         padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          //         child: Column(
+          //           children: [
+          //             _codesList(accountRedeemSummary.redeemedCodes, 'Redeemed',
+          //                 AppearanceManager().color.green),
+          //             _codesList(accountRedeemSummary.usedCodes, 'already used',
+          //                 AppearanceManager().color.yellow),
+          //             Row(
+          //               mainAxisAlignment: shouldAddReportNotFoundExpiredButton
+          //                   ? MainAxisAlignment.spaceBetween
+          //                   : MainAxisAlignment.center,
+          //               children: [
+          //                 Column(
+          //                   children: [
+          //                     _codesList(
+          //                         accountRedeemSummary.knownExpiredCodes +
+          //                             accountRedeemSummary.expiredCodes,
+          //                         'expired',
+          //                         AppearanceManager().color.red),
+          //                     _codesList(accountRedeemSummary.notFoundCodes,
+          //                         'not found', AppearanceManager().color.red),
+          //                   ],
+          //                 ),
+          //                 if (shouldAddReportNotFoundExpiredButton)
+          //                   ElevatedButton.icon(
+          //                     onPressed: () async {
+          //                       ScaffoldMessenger.of(context).showSnackBar(
+          //                           AppearanceManager().snackBarStr(
+          //                               'Thank you!',
+          //                               duration: Duration(seconds: 2)));
+          //                       if (hasAlreadyReported) {
+          //                         return;
+          //                       }
+          //                       String error = '';
+          //                       if (accountRedeemSummary
+          //                           .notFoundCodes.isNotEmpty) {
+          //                         error +=
+          //                             'not found codes: ${accountRedeemSummary.notFoundCodes} ';
+          //                       }
+          //                       if (accountRedeemSummary
+          //                           .expiredCodes.isNotEmpty) {
+          //                         error +=
+          //                             'expired codes: ${accountRedeemSummary.expiredCodes}';
+          //                       }
+          //                       ErrorReporter.report(
+          //                           Exception('Bad redemption codes'), error);
+          //                       hasAlreadyReported = true;
+          //                     },
+          //                     icon: Icon(
+          //                       CupertinoIcons
+          //                           .arrowshape_turn_up_right_circle_fill,
+          //                     ),
+          //                     label: Text('report'),
+          //                   ),
+          //               ],
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //       Center(
+          //         child: Column(
+          //           children: [
+          //             if (accountRedeemSummary.redeemedCodes.isNotEmpty)
+          //               Row(
+          //                 mainAxisAlignment: MainAxisAlignment.center,
+          //                 children: [
+          //                   Icon(
+          //                     CupertinoIcons.gift,
+          //                     color: AppearanceManager().color.main,
+          //                     size: 20.0,
+          //                   ),
+          //                   SizedBox(width: 15.0),
+          //                   Icon(
+          //                     CupertinoIcons.gift,
+          //                     color: AppearanceManager().color.main,
+          //                     size: 20.0,
+          //                   ),
+          //                   SizedBox(width: 15.0),
+          //                   Icon(
+          //                     CupertinoIcons.gift,
+          //                     color: AppearanceManager().color.main,
+          //                     size: 20.0,
+          //                   ),
+          //                 ],
+          //               ),
+          //             SizedBox(
+          //               height: 15.0,
+          //             )
+          //           ],
+          //         ),
+          //       ),
+          //     ],
+          //   );
+          // }).toList(),
+          // aspectRatio: width / height,
+        // ),
       ),
     );
   }
