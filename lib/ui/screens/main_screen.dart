@@ -16,11 +16,12 @@ import 'package:afk_redeem/data/user_message.dart';
 import 'package:afk_redeem/data/account_redeem_summary.dart';
 import 'package:afk_redeem/ui/components/about_dialog.dart';
 import 'package:afk_redeem/ui/components/disclosure_dialog.dart';
-// import 'package:afk_redeem/ui/components/help_button.dart';
+import 'package:afk_redeem/ui/components/help_button.dart';
 import 'package:afk_redeem/ui/image_manager.dart';
 import 'package:afk_redeem/ui/appearance_manager.dart';
 import 'package:afk_redeem/ui/components/redemption_code_card.dart';
 import 'package:afk_redeem/ui/components/app_builder.dart';
+// import 'package:afk_redeem/ui/components/carousel_dialog.dart';
 import 'package:afk_redeem/ui/components/first_connection_error_dialog.dart';
 import 'package:afk_redeem/ui/components/drawer_links.dart';
 import 'package:afk_redeem/ui/components/redeem_dialog.dart';
@@ -402,16 +403,23 @@ class _MainScreenState extends State<MainScreen>
                                                 },
                                               ),
                                               trailing: _userIdEmpty
-                                                  ? Text('Carousel')
-                                                  // ? carouselDialogHelpButton(
-                                                  //     context: context,
-                                                  //     carouselItems: [
-                                                  //       Image.asset(
-                                                  //           'images/game_screenshots/player.jpg'),
-                                                  //       Image.asset(
-                                                  //           'images/game_screenshots/details.jpg'),
-                                                  //     ],
-                                                  //   )
+                                                  // ? Text('Carousel')
+                                                  ? carouselDialogHelpButton(
+                                                      context: context,
+                                                      carouselItems: [
+                                                        // Expanded(
+                                                        //   child: Image.asset(
+                                                        //       'images/game_screenshots/player.jpg'),
+                                                        // ),
+                                                        // Expanded(
+                                                        //     child: Image.asset(
+                                                        //     'images/game_screenshots/details.jpg')),
+                                                        Image.asset(
+                                                            'images/game_screenshots/player.jpg'),
+                                                        Image.asset(
+                                                            'images/game_screenshots/details.jpg'),
+                                                      ],
+                                                    )
                                                   : SizedBox(width: 25.0),
                                             ),
                                           ],

@@ -283,7 +283,7 @@ class CodeRedeemer {
     if (userAccounts != 0) {
       codesRedeemedCrossAccounts = (codesRedeemed / userAccounts).round();
       progress =
-          (100 * codesRedeemedCrossAccounts / redemptionCodes.length).round() as double;
+          (100 * codesRedeemedCrossAccounts / redemptionCodes.length).roundToDouble();
       if (codesRedeemed % userAccounts == 0 && progress != 100) {
         codesRedeemedMessage = '⏳ Redeem frequency limit';
       }
