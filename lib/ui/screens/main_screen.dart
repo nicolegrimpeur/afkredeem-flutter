@@ -149,7 +149,7 @@ class _MainScreenState extends State<MainScreen>
               ),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  launch(kLinks.storeLink);
+                  launchUrl(Uri.parse(kLinks.storeLink));
                 },
             ),
             TextSpan(
@@ -491,7 +491,7 @@ class _MainScreenState extends State<MainScreen>
                                         if (Preferences().showBuyMeCoffeeLink)
                                           GestureDetector(
                                             onTap: () async {
-                                              launch(kLinks.buyMeCoffee);
+                                              launchUrl(Uri.parse(kLinks.buyMeCoffee));
                                             },
                                             child: Text(
                                               'buy me ☕',

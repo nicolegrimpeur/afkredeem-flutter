@@ -308,7 +308,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
               onPressed: () {
                 Navigator.pop(context); // pop this dialog
                 String? buttonLink = kLinks.lilithReferer;
-                launch(buttonLink);
+                launchUrl(Uri.parse(buttonLink));
               },
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -350,7 +350,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pop(context); // pop this dialog
-                launch(kLinks.storeLink);
+                launchUrl(Uri.parse(kLinks.storeLink));
               },
               child: Row(
                 mainAxisSize: MainAxisSize.min,

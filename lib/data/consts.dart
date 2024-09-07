@@ -46,6 +46,7 @@ mixin kLinks {
   static const String afkRedeem = 'https://afkredeem.com/';
   static const String githubProject =
       'https://github.com/afkredeem/afkredeem-flutter';
+  static const String issuesGithubProject = githubProject + '/issues';
 
   static const _androidStoreLink =
       'https://play.google.com/store/apps/details?id=com.afkredeem';
@@ -82,12 +83,8 @@ mixin kUris {
   static const String afkRedeemApi = 'api.json';
 }
 
-mixin kFlutterHtmlUri {
-  static const String drawer = 'flutter_html/general/drawer.html';
-  static const String about = 'flutter_html/general/about.html';
-  static const String redeemNotSupported =
-      'flutter_html/general/redeem_not_supported.html';
-  static const String upgradeApp = 'flutter_html/general/redeem_upgrade.html';
+mixin kContact {
+  static const String email = 'afkredeem@gmail.com';
 }
 
 bool shouldReportDioError(DioException ex) {

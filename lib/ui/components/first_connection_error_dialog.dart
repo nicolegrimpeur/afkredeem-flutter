@@ -23,7 +23,7 @@ AlertDialog firstConnectionErrorDialog(BuildContext context) {
             style: TextStyle(color: AppearanceManager().color.main),
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                launch(kLinks.afkRedeem);
+                launchUrl(Uri.parse(kLinks.afkRedeem));
               },
           ),
           TextSpan(

@@ -72,7 +72,7 @@ Widget disclosureDialog(BuildContext context) {
                 ),
               ],
             ),
-            onTap: () => launch(kLinks.githubProject),
+            onTap: () => launchUrl(Uri.parse(kLinks.githubProject)),
             splashColor: AppearanceManager().color.mainBright,
           ),
           SizedBox(

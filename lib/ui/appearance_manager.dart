@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:afk_redeem/data/preferences.dart';
@@ -261,6 +260,19 @@ class AppearanceManager {
       colorScheme: theme.colorScheme.copyWith(secondary: color.main),
     );
   }
+
+  TextStyle get textStyle => TextStyle(
+    color: AppearanceManager().color.text,
+  );
+
+  TextStyle get mainTextStyle => TextStyle(
+    color: AppearanceManager().color.mainText,
+  );
+
+  TextStyle get linkStyle => TextStyle(
+    color: AppearanceManager().color.mainText,
+    decoration: TextDecoration.underline,
+  );
 }
 
 class UserMessageInfo {
