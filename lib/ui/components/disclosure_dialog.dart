@@ -88,7 +88,7 @@ Widget disclosureDialog(BuildContext context) {
                 },
                 child: Text(
                   'Get me out',
-                  style: TextStyle(fontSize: 16.0),
+                  style: TextStyle(fontSize: 16.0, color: AppearanceManager().color.text),
                 ),
               ),
               ElevatedButton(
@@ -98,7 +98,7 @@ Widget disclosureDialog(BuildContext context) {
                 },
                 child: Text(
                   '     OK     ',
-                  style: TextStyle(fontSize: 16.0),
+                  style: TextStyle(fontSize: 16.0, color: AppearanceManager().color.text),
                 ),
               ),
             ],
