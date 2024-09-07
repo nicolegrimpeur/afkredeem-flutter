@@ -327,6 +327,7 @@ class _MainScreenState extends State<MainScreen>
                 ),
               ),
               child: Drawer(
+                backgroundColor: AppearanceManager().color.background,
                 child: ListTileTheme(
                   iconColor: AppearanceManager().color.text,
                   child: Column(
@@ -403,17 +404,9 @@ class _MainScreenState extends State<MainScreen>
                                                 },
                                               ),
                                               trailing: _userIdEmpty
-                                                  // ? Text('Carousel')
                                                   ? carouselDialogHelpButton(
                                                       context: context,
                                                       carouselItems: [
-                                                        // Expanded(
-                                                        //   child: Image.asset(
-                                                        //       'images/game_screenshots/player.jpg'),
-                                                        // ),
-                                                        // Expanded(
-                                                        //     child: Image.asset(
-                                                        //     'images/game_screenshots/details.jpg')),
                                                         Image.asset(
                                                             'images/game_screenshots/player.jpg'),
                                                         Image.asset(

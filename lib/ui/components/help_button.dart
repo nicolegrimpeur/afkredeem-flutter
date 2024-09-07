@@ -8,7 +8,7 @@ Widget helpButton({required Function() onPressed}) {
       iconSize: 25.0,
       onPressed: onPressed,
       icon: Icon(Icons.help,
-          color: AppearanceManager().color.main.withOpacity(0.2))
+          color: AppearanceManager().color.main.withOpacity(0.5))
   );
 }
 
