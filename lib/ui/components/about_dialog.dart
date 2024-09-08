@@ -1,22 +1,13 @@
 import 'package:afk_redeem/data/consts.dart';
 import 'package:afk_redeem/data/services/afk_redeem_api.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:afk_redeem/ui/appearance_manager.dart';
 import 'package:afk_redeem/ui/image_manager.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 
 Future<AlertDialog> aboutDialog(
     BuildContext context, AfkRedeemApi afkRedeemApi) async {
-  GestureRecognizer tapGestureRecognizer(Uri uri) {
-    return new TapGestureRecognizer()
-      ..onTap = () {
-        launchUrl(uri);
-      };
-  }
-
   return AlertDialog(
     title: Text('About'),
     content: Column(
@@ -40,7 +31,8 @@ Future<AlertDialog> aboutDialog(
                   new TextSpan(
                     text: 'issues section',
                     style: AppearanceManager().linkStyle,
-                    recognizer: tapGestureRecognizer(Uri.parse(kLinks.issuesGithubProject)),
+                    recognizer: AppearanceManager().tapGestureRecognizer(
+                        Uri.parse(kLinks.issuesGithubProject)),
                   ),
                   new TextSpan(
                     text: ' in the ',
@@ -49,7 +41,8 @@ Future<AlertDialog> aboutDialog(
                   new TextSpan(
                     text: 'github project',
                     style: AppearanceManager().linkStyle,
-                    recognizer: tapGestureRecognizer(Uri.parse(kLinks.githubProject)),
+                    recognizer: AppearanceManager().tapGestureRecognizer(
+                        Uri.parse(kLinks.githubProject)),
                   ),
                   new TextSpan(
                     text: '.\n\n',
@@ -62,7 +55,7 @@ Future<AlertDialog> aboutDialog(
                   new TextSpan(
                     text: 'contact️',
                     style: AppearanceManager().linkStyle,
-                    recognizer: tapGestureRecognizer(Uri(
+                    recognizer: AppearanceManager().tapGestureRecognizer(Uri(
                         scheme: 'mailto',
                         path: kContact.email,
                         queryParameters: {

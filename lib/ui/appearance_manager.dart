@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:afk_redeem/data/preferences.dart';
 import 'package:afk_redeem/data/user_message.dart';
@@ -273,6 +275,13 @@ class AppearanceManager {
     color: AppearanceManager().color.mainText,
     decoration: TextDecoration.underline,
   );
+
+  GestureRecognizer tapGestureRecognizer(Uri uri) {
+    return new TapGestureRecognizer()
+      ..onTap = () {
+        launchUrl(uri);
+      };
+  }
 }
 
 class UserMessageInfo {

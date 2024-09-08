@@ -21,7 +21,6 @@ import 'package:afk_redeem/ui/image_manager.dart';
 import 'package:afk_redeem/ui/appearance_manager.dart';
 import 'package:afk_redeem/ui/components/redemption_code_card.dart';
 import 'package:afk_redeem/ui/components/app_builder.dart';
-// import 'package:afk_redeem/ui/components/carousel_dialog.dart';
 import 'package:afk_redeem/ui/components/first_connection_error_dialog.dart';
 import 'package:afk_redeem/ui/components/drawer_links.dart';
 import 'package:afk_redeem/ui/components/redeem_dialog.dart';

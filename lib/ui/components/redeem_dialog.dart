@@ -293,12 +293,29 @@ class _RedeemDialogState extends State<RedeemDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            // TODO: revérifier le texte
-            child: Text(
-            'Unfortunately, Lilith Games changed their Redeem API,\n\n'
-            'so the app is unable to redeem codes until an update is issued.\n\n'
-            'We are working on it, and will update this message when an upgrade is available.'
-            'we\'ve put everything in the clipboard for your convenience.'),
+            // TODO: à confirmer in app
+            child: new RichText(
+              text: new TextSpan(
+                children: [
+                  new TextSpan(
+                    text: 'Unfortunately, Lilith Games changed their Redeem API, so the app is unable to redeem codes until an update is issued.\n\n'
+                      'We are working on it, and will update this message when an upgrade is available.\n\n'
+                      'In the meantime, you can use the ',
+                    style: AppearanceManager().textStyle,
+                  ),
+                  new TextSpan(
+                    text: 'original redeem page',
+                    style: AppearanceManager().linkStyle,
+                    recognizer: AppearanceManager().tapGestureRecognizer(Uri.parse(kLinks.lilithReferer)),
+                  ),
+                  new TextSpan(
+                    text: ' to redeem your codes.\n\n'
+                        'We\'ve put everything in the clipboard for your convenience.',
+                    style: AppearanceManager().textStyle,
+                  ),
+                ],
+              ),
+            ),
           ),
           SizedBox(
             height: 15.0,
@@ -337,11 +354,37 @@ class _RedeemDialogState extends State<RedeemDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            // TODO: refaire le texte
-            child: Text(
-            'It appears that we are unable to connect to afkredeem.com and update with the latest codes.\n\n'
-            'This happens sometimes upon first connection (since afkredeem.com\'s authentication keys are not yet recognized everywhere).\n\n'
-            'Try switching your wifi network (or change wifi <-> cellular connection) and retry (pull down for update).'),
+            // TODO: à confirmer in app
+            child: new RichText(
+              text: new TextSpan(
+                children: [
+                  new TextSpan(
+                    text: 'It appears that we are unable to connect to ',
+                    style: AppearanceManager().textStyle,
+                  ),
+                  new TextSpan(
+                    text: 'afkredeem.com',
+                    style: AppearanceManager().linkStyle,
+                    recognizer: AppearanceManager().tapGestureRecognizer(Uri.parse(kLinks.afkRedeem)),
+                  ),
+                  new TextSpan(
+                    text: ' and update with the latest codes.\n\n'
+                        'This happens sometimes upon first connection (since ',
+                    style: AppearanceManager().textStyle,
+                  ),
+                  new TextSpan(
+                    text: 'afkredeem.com',
+                    style: AppearanceManager().linkStyle,
+                    recognizer: AppearanceManager().tapGestureRecognizer(Uri.parse(kLinks.afkRedeem)),
+                  ),
+                  new TextSpan(
+                    text: '\'s authentication keys are not yet recognized everywhere).\n\n'
+                        'Try switching your wifi network (or change wifi <-> cellular connection) and retry (pull down for update).',
+                    style: AppearanceManager().textStyle,
+                  ),
+                ],
+              ),
+            ),
           ),
           SizedBox(
             height: 15.0,
