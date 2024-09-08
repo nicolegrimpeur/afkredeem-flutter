@@ -187,7 +187,9 @@ class _RedeemDialogState extends State<RedeemDialog> {
       analytics.logEvent(name: 'redeem_verification_failed');
     }
     this.errorMessage = errorMessage;
-    redeemDialogState = RedeemDialogState.error;
+    setState(() {
+      redeemDialogState = RedeemDialogState.error;
+    });
   }
 
   static const Map<AccountRedeemStrategy, String> kAccountRedeemStrategyStr = {
@@ -282,7 +284,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
     ),
     child: Text(
       'Redeem!',
-      style: TextStyle(fontSize: 16.0),
+      style: AppearanceManager().buttonTextStyle,
     ),
   );
 
@@ -336,7 +338,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                   ),
                   Text(
                     'Web Redeem',
-                    style: TextStyle(fontSize: 16.0),
+                    style: AppearanceManager().buttonTextStyle,
                   ),
                 ],
               ),
@@ -404,7 +406,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                   ),
                   Text(
                     'Upgrade',
-                    style: TextStyle(fontSize: 16.0),
+                    style: AppearanceManager().buttonTextStyle,
                   ),
                 ],
               ),
@@ -694,7 +696,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                     ),
                     child: Text(
                       'Summary',
-                      style: TextStyle(fontSize: 16.0),
+                      style: AppearanceManager().buttonTextStyle,
                     ),
                   ),
                 ),
@@ -754,7 +756,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
             },
             child: Text(
               'Redeem!',
-              style: TextStyle(fontSize: 16.0),
+              style: AppearanceManager().buttonTextStyle,
             ),
           ),
       ],
@@ -965,7 +967,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
           },
           child: Text(
             'Back 👉🏼',
-            style: TextStyle(fontSize: 16.0),
+            style: AppearanceManager().buttonTextStyle,
           ),
         ),
       ],

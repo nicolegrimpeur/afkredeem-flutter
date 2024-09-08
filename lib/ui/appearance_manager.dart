@@ -66,6 +66,7 @@ class AppearanceManager {
           dialogBackgroundOverlay: Color(0xFF372F57),
           dialogTitleText: Color(0xFFD888EE),
           dialogText: Color(0xFFC2C2C2),
+          buttonText: Color(0xFFFFFFFF),
           inactiveSwitch: Color(0xFFFFE89A),
           red: Colors.red,
           yellow: Colors.yellow,
@@ -95,6 +96,7 @@ class AppearanceManager {
           dialogBackgroundOverlay: Color(0xFFFFEFD6),
           dialogTitleText: Color(0xFF5E5E5E),
           dialogText: Color(0xFF242424),
+          buttonText: Color(0xFFFFFFFF),
           inactiveSwitch: Color(0xFFFFE89A),
           red: Color(0xFFE51C0B),
           yellow: Color(0xFFEEB900),
@@ -124,6 +126,7 @@ class AppearanceManager {
           dialogBackgroundOverlay: Color(0xFFFFC9C9),
           dialogTitleText: Color(0xFFB30000),
           dialogText: Color(0xFF424242),
+          buttonText: Color(0xFFFFFFFF),
           inactiveSwitch: Color(0xFFECB5B5),
           red: Color(0xFFE51C0B),
           yellow: Color(0xFFEEB900),
@@ -271,6 +274,11 @@ class AppearanceManager {
     color: AppearanceManager().color.mainText,
   );
 
+  TextStyle get buttonTextStyle => TextStyle(
+    color: AppearanceManager().color.buttonText,
+    fontSize: 16.0,
+  );
+
   TextStyle get linkStyle => TextStyle(
     color: AppearanceManager().color.mainText,
     decoration: TextDecoration.underline,
@@ -323,6 +331,7 @@ class ColorPalette {
   final Color dialogBackgroundOverlay;
   final Color dialogTitleText;
   final Color dialogText;
+  final Color buttonText;
   final Color inactiveSwitch;
   final Color red;
   final Color yellow;
@@ -350,6 +359,7 @@ class ColorPalette {
     "dialogBackgroundOverlay": dialogBackgroundOverlay,
     "dialogTitleText": dialogTitleText,
     "dialogText": dialogText,
+    "buttonText": buttonText,
     "inactiveSwitch": inactiveSwitch,
     "red": red,
     "yellow": yellow,
@@ -378,6 +388,7 @@ class ColorPalette {
       required this.dialogBackgroundOverlay,
       required this.dialogTitleText,
       required this.dialogText,
+      required this.buttonText,
       required this.inactiveSwitch,
       required this.red,
       required this.yellow,
