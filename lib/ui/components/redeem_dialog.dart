@@ -295,7 +295,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            // TODO: à confirmer in app
             child: new RichText(
               text: new TextSpan(
                 children: [
@@ -356,7 +355,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            // TODO: à confirmer in app
             child: new RichText(
               text: new TextSpan(
                 children: [
