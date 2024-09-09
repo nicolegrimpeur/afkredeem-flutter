@@ -31,16 +31,16 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 35
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
     defaultConfig {
-        applicationId "com.afkredeem"
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion 34
+        applicationId "com.afkredeemv2"
+        minSdkVersion flutter.minSdkVersion.toInteger()
+        targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
@@ -63,6 +63,7 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    namespace 'com.afkredeem'
 }
 
 flutter {
@@ -70,7 +71,7 @@ flutter {
 }
 
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:28.2.1')
+    implementation platform('com.google.firebase:firebase-bom:33.2.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-messaging'

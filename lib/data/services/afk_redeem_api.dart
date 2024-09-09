@@ -49,6 +49,7 @@ class AfkRedeemApi {
       userErrorHandler(UserMessage.connectionFailed);
       ErrorReporter.report(ex, 'Unknown parse error on connection to $url');
     }
+    return null;
   }
 
   Future<void> update() async {
