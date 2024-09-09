@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:device_apps/device_apps.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
 import 'package:afk_redeem/data/consts.dart';
@@ -197,35 +196,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
     AccountRedeemStrategy.allAccounts: 'ALL Accounts',
     AccountRedeemStrategy.select: 'Select...',
   };
-
-  Widget _openAfkArenaButton = FutureBuilder<Application?>(
-    future: DeviceApps.getApp(kAfkArenaStorePackage),
-    builder: (
-      BuildContext context,
-      AsyncSnapshot<Application?> snapshot,
-    ) {
-      if (!snapshot.hasData || snapshot.data == null) {
-        return Container();
-      }
-      // app is installed
-      return InkWell(
-        onTap: () {
-          snapshot.data!.openApp();
-        },
-        splashColor: AppearanceManager().color.main.withOpacity(0.5),
-        child: Ink(
-          height: 45,
-          width: 45,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('images/afk_arena_icon.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      );
-    },
-  );
 
   Widget _verificationCodeCarouselDialogButton() {
     return carouselDialogHelpButton(
@@ -595,7 +565,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _openAfkArenaButton,
+              Container(),
               redeemButton,
             ],
           ),

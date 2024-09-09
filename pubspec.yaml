@@ -20,8 +20,7 @@ dependencies:
   dio_cookie_manager: ^3.1.1
   animated_text_kit: ^4.2.1
   bubble: ^1.2.1
-  device_apps: ^2.1.1
-  package_info: ^2.0.2
+  package_info_plus: ^8.0.2
   flutter_animation_progress_bar: ^2.0.1
   firebase_core: ^3.3.0
   firebase_messaging: ^15.0.4
