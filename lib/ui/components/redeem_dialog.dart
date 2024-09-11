@@ -750,9 +750,8 @@ class _RedeemDialogState extends State<RedeemDialog> {
         width: width,
         padding: EdgeInsets.zero,
         margin: EdgeInsets.zero,
-        child:
-            CarouselViewer(
-          accountRedeemSummaries
+        child: Column(
+          children: accountRedeemSummaries
               .map((AccountRedeemSummary accountRedeemSummary) {
             bool shouldAddReportNotFoundExpiredButton = !isManualRedeem &&
                 (accountRedeemSummary.notFoundCodes.isNotEmpty ||
@@ -796,7 +795,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
                     children: [
                       _codesList(accountRedeemSummary.redeemedCodes, 'Redeemed',
@@ -849,6 +848,10 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                     .arrowshape_turn_up_right_circle_fill,
                               ),
                               label: Text('report'),
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: AppearanceManager().color.buttonText,
+                                backgroundColor: AppearanceManager().color.main,
+                              ),
                             ),
                         ],
                       ),
