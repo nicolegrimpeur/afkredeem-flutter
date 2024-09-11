@@ -18,7 +18,6 @@ import 'package:afk_redeem/data/account_redeem_summary.dart';
 import 'package:afk_redeem/data/error_reporter.dart';
 import 'package:afk_redeem/ui/appearance_manager.dart';
 import 'package:afk_redeem/ui/components/help_button.dart';
-import 'package:afk_redeem/ui/components/carousel_dialog.dart';
 
 enum RedeemDialogState {
   fillForm,
