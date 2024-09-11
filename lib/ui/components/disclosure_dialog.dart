@@ -8,11 +8,8 @@ import 'package:afk_redeem/ui/image_manager.dart';
 import 'package:afk_redeem/data/preferences.dart';
 
 Widget disclosureDialog(BuildContext context) {
-  return WillPopScope(
-    onWillPop: () {
-      // prevent close using 'back' button
-      return false as Future<bool>;
-    },
+  return PopScope(
+    canPop: false,
     child: AlertDialog(
       title: Text('Disclosure'),
       content: Column(
