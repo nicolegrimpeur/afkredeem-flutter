@@ -14,7 +14,6 @@ import 'package:afk_redeem/data/redemption_code.dart';
 import 'package:afk_redeem/data/services/afk_redeem_api.dart';
 import 'package:afk_redeem/data/user_message.dart';
 import 'package:afk_redeem/data/account_redeem_summary.dart';
-import 'package:afk_redeem/ui/components/html_renderer.dart';
 import 'package:afk_redeem/ui/components/about_dialog.dart';
 import 'package:afk_redeem/ui/components/disclosure_dialog.dart';
 import 'package:afk_redeem/ui/components/help_button.dart';
@@ -59,11 +58,6 @@ class _MainScreenState extends State<MainScreen>
   );
   double _brutusHeight = BASE_BRUTUS_HEIGHT;
   GlobalKey _brutusKey = GlobalObjectKey('brutus');
-  late Future<String?> _drawerLinks = HtmlRenderer.getHtml(
-    context: context,
-    uri: kFlutterHtmlUri.drawer,
-    afkRedeemApi: _afkRedeemApi,
-  );
   bool newerVersionMessageShown = false;
 
   @override
@@ -154,7 +148,7 @@ class _MainScreenState extends State<MainScreen>
               ),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  launch(kLinks.storeLink);
+                  launchUrl(Uri.parse(kLinks.storeLink));
                 },
             ),
             TextSpan(
@@ -203,7 +197,7 @@ class _MainScreenState extends State<MainScreen>
         ),
       ),
     );
-    Overlay.of(context)!.insert(overlayEntry);
+    Overlay.of(context).insert(overlayEntry);
     Future.delayed(duration ?? Duration(seconds: 5))
         .then((value) => overlayEntry.remove());
     return true;
@@ -325,13 +319,14 @@ class _MainScreenState extends State<MainScreen>
               data: Theme.of(context).copyWith(
                 canvasColor: AppearanceManager().color.background,
                 textTheme: TextTheme(
-                  bodyText1: TextStyle(),
-                  bodyText2: TextStyle(),
+                  bodyLarge: TextStyle(),
+                  bodyMedium: TextStyle(),
                 ).apply(
                   bodyColor: AppearanceManager().color.text,
                 ),
               ),
               child: Drawer(
+                backgroundColor: AppearanceManager().color.background,
                 child: ListTileTheme(
                   iconColor: AppearanceManager().color.text,
                   child: Column(
@@ -484,7 +479,7 @@ class _MainScreenState extends State<MainScreen>
                                     ],
                                   ),
                                   if (_canFetchHtmlPages)
-                                    drawerLinks(context, _drawerLinks),
+                                    drawerLinks(context),
                                   Padding(
                                     padding:
                                         const EdgeInsets.only(bottom: 10.0),
@@ -495,7 +490,7 @@ class _MainScreenState extends State<MainScreen>
                                         if (Preferences().showBuyMeCoffeeLink)
                                           GestureDetector(
                                             onTap: () async {
-                                              launch(kLinks.buyMeCoffee);
+                                              launchUrl(Uri.parse(kLinks.buyMeCoffee));
                                             },
                                             child: Text(
                                               'buy me ☕',

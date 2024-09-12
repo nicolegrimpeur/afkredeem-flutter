@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:device_apps/device_apps.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
 import 'package:afk_redeem/data/consts.dart';
@@ -19,8 +18,6 @@ import 'package:afk_redeem/data/account_redeem_summary.dart';
 import 'package:afk_redeem/data/error_reporter.dart';
 import 'package:afk_redeem/ui/appearance_manager.dart';
 import 'package:afk_redeem/ui/components/help_button.dart';
-import 'package:afk_redeem/ui/components/html_renderer.dart';
-import 'package:afk_redeem/ui/components/carousel_dialog.dart';
 
 enum RedeemDialogState {
   fillForm,
@@ -65,7 +62,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
   TextEditingController verificationCodeController = TextEditingController();
   final tooltipKey = GlobalKey<State<Tooltip>>();
 
-  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static final AdRequest adRequest = AdRequest(
     keywords: kAdsKeywords,
     nonPersonalizedAds: true,
@@ -91,7 +88,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
   AccountInfo? selectedAccount;
   List<AccountRedeemSummary> accountRedeemSummaries = [];
   UserMessage? errorMessage;
-  int progress = 0;
+  double progress = 0;
   int codesRedeemed = 0;
   String progressMessage = "";
   bool selectAccount = false;
@@ -131,7 +128,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
     });
   }
 
-  void _progressUpdate(int progress, int codesRedeemed, String message) async {
+  void _progressUpdate(double progress, int codesRedeemed, String message) async {
     setState(() {
       this.progress = progress;
       this.codesRedeemed = codesRedeemed;
@@ -188,7 +185,9 @@ class _RedeemDialogState extends State<RedeemDialog> {
       analytics.logEvent(name: 'redeem_verification_failed');
     }
     this.errorMessage = errorMessage;
-    redeemDialogState = RedeemDialogState.error;
+    setState(() {
+      redeemDialogState = RedeemDialogState.error;
+    });
   }
 
   static const Map<AccountRedeemStrategy, String> kAccountRedeemStrategyStr = {
@@ -196,35 +195,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
     AccountRedeemStrategy.allAccounts: 'ALL Accounts',
     AccountRedeemStrategy.select: 'Select...',
   };
-
-  Widget _openAfkArenaButton = FutureBuilder<Application?>(
-    future: DeviceApps.getApp(kAfkArenaStorePackage),
-    builder: (
-      BuildContext context,
-      AsyncSnapshot<Application?> snapshot,
-    ) {
-      if (!snapshot.hasData || snapshot.data == null) {
-        return Container();
-      }
-      // app is installed
-      return InkWell(
-        onTap: () {
-          snapshot.data!.openApp();
-        },
-        splashColor: AppearanceManager().color.main.withOpacity(0.5),
-        child: Ink(
-          height: 45,
-          width: 45,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('images/afk_arena_icon.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      );
-    },
-  );
 
   Widget _verificationCodeCarouselDialogButton() {
     return carouselDialogHelpButton(
@@ -283,134 +253,134 @@ class _RedeemDialogState extends State<RedeemDialog> {
     ),
     child: Text(
       'Redeem!',
-      style: TextStyle(fontSize: 16.0),
+      style: AppearanceManager().buttonTextStyle,
     ),
   );
 
   Widget _apiVersionNotSupportedDialog() {
-    return FutureBuilder<String?>(
-      future: HtmlRenderer.getHtml(
-        context: context,
-        uri: kFlutterHtmlUri.redeemNotSupported,
-        afkRedeemApi: widget.afkRedeemApi,
-      ),
-      builder: (BuildContext context, AsyncSnapshot<String?> htmlSnapshot) {
-        Widget? htmlWidget;
-        String? html;
-        if (!htmlSnapshot.hasData) {
-          htmlWidget = loadingWidget;
-        } else {
-          html = htmlSnapshot.data!;
-          htmlWidget = HtmlRenderer.tryRender(context, html);
-          if (htmlWidget == null) {
-            htmlWidget = Container(
-              child: Text(
-                  'Unfortunately, Lilith Games changed their Redeem API,\n\n'
-                  'so the app is unable to redeem codes until an update is issued.\n\n'
-                  'We are working on it, and will update this message when an upgrade is available.'
-                  'we\'ve put everything in the clipboard for your convenience.'),
-            );
-          }
-        }
-        return AlertDialog(
-          title: Text(HtmlRenderer.getTitle(html) ?? 'Oh no  😕'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              htmlWidget,
-              SizedBox(
-                height: 15.0,
-              ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context); // pop this dialog
-                    String? buttonLink =
-                        HtmlRenderer.lastRenderButtonLinks['Web Redeem'];
-                    if (buttonLink != null) {
-                      launch(buttonLink);
-                    }
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(CupertinoIcons.globe),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text(
-                        'Web Redeem',
-                        style: TextStyle(fontSize: 16.0),
-                      ),
-                    ],
+    return AlertDialog(
+      title: Text('Oh no 😕'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            child: new RichText(
+              text: new TextSpan(
+                children: [
+                  new TextSpan(
+                    text: 'Unfortunately, Lilith Games changed their Redeem API, so the app is unable to redeem codes until an update is issued.\n\n'
+                      'We are working on it, and will update this message when an upgrade is available.\n\n'
+                      'In the meantime, you can use the ',
+                    style: AppearanceManager().textStyle,
                   ),
-                ),
+                  new TextSpan(
+                    text: 'original redeem page',
+                    style: AppearanceManager().linkStyle,
+                    recognizer: AppearanceManager().tapGestureRecognizer(Uri.parse(kLinks.lilithReferer)),
+                  ),
+                  new TextSpan(
+                    text: ' to redeem your codes.\n\n'
+                        'We\'ve put everything in the clipboard for your convenience.',
+                    style: AppearanceManager().textStyle,
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        );
-      },
+          SizedBox(
+            height: 15.0,
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // pop this dialog
+                String? buttonLink = kLinks.lilithReferer;
+                launchUrl(Uri.parse(buttonLink));
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(CupertinoIcons.globe),
+                  SizedBox(
+                    width: 5.0,
+                  ),
+                  Text(
+                    'Web Redeem',
+                    style: AppearanceManager().buttonTextStyle,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
-  }
+}
 
   Widget _suggestVersionUpgradeDialog() {
-    return FutureBuilder<String?>(
-      future: HtmlRenderer.getHtml(
-        context: context,
-        uri: kFlutterHtmlUri.upgradeApp,
-        afkRedeemApi: widget.afkRedeemApi,
-      ),
-      builder: (BuildContext context, AsyncSnapshot<String?> htmlSnapshot) {
-        Widget? htmlWidget;
-        String? html;
-        if (!htmlSnapshot.hasData) {
-          htmlWidget = loadingWidget;
-        } else {
-          html = htmlSnapshot.data!;
-          htmlWidget = HtmlRenderer.tryRender(context, html);
-          if (htmlWidget == null) {
-            htmlWidget = Container(
-              child: Text(
-                  'It appears that Lilith Games changed their Redeem API.\n\n'
-                  'The good news is that our latest app version supports it.\n\n'
-                  'Upgrade in order to redeem directly from the app.'),
-            );
-          }
-        }
-        return AlertDialog(
-          title: Text(HtmlRenderer.getTitle(html) ?? 'Upgrade Required'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              htmlWidget,
-              SizedBox(
-                height: 15.0,
-              ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context); // pop this dialog
-                    launch(kLinks.storeLink);
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(CupertinoIcons.square_arrow_up_on_square),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text(
-                        'Upgrade',
-                        style: TextStyle(fontSize: 16.0),
-                      ),
-                    ],
+    return AlertDialog(
+      title: Text('Upgrade Required'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            child: new RichText(
+              text: new TextSpan(
+                children: [
+                  new TextSpan(
+                    text: 'It appears that we are unable to connect to ',
+                    style: AppearanceManager().textStyle,
                   ),
-                ),
+                  new TextSpan(
+                    text: 'afkredeem.com',
+                    style: AppearanceManager().linkStyle,
+                    recognizer: AppearanceManager().tapGestureRecognizer(Uri.parse(kLinks.afkRedeem)),
+                  ),
+                  new TextSpan(
+                    text: ' and update with the latest codes.\n\n'
+                        'This happens sometimes upon first connection (since ',
+                    style: AppearanceManager().textStyle,
+                  ),
+                  new TextSpan(
+                    text: 'afkredeem.com',
+                    style: AppearanceManager().linkStyle,
+                    recognizer: AppearanceManager().tapGestureRecognizer(Uri.parse(kLinks.afkRedeem)),
+                  ),
+                  new TextSpan(
+                    text: '\'s authentication keys are not yet recognized everywhere).\n\n'
+                        'Try switching your wifi network (or change wifi <-> cellular connection) and retry (pull down for update).',
+                    style: AppearanceManager().textStyle,
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        );
-      },
+          SizedBox(
+            height: 15.0,
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // pop this dialog
+                launchUrl(Uri.parse(kLinks.storeLink));
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(CupertinoIcons.square_arrow_up_on_square),
+                  SizedBox(
+                    width: 5.0,
+                  ),
+                  Text(
+                    'Upgrade',
+                    style: AppearanceManager().buttonTextStyle,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -594,7 +564,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _openAfkArenaButton,
+              Container(),
               redeemButton,
             ],
           ),
@@ -693,7 +663,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                     ),
                     child: Text(
                       'Summary',
-                      style: TextStyle(fontSize: 16.0),
+                      style: AppearanceManager().buttonTextStyle,
                     ),
                   ),
                 ),
@@ -753,7 +723,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
             },
             child: Text(
               'Redeem!',
-              style: TextStyle(fontSize: 16.0),
+              style: AppearanceManager().buttonTextStyle,
             ),
           ),
       ],
@@ -779,8 +749,8 @@ class _RedeemDialogState extends State<RedeemDialog> {
         width: width,
         padding: EdgeInsets.zero,
         margin: EdgeInsets.zero,
-        child: CarouselViewer(
-          accountRedeemSummaries
+        child: Column(
+          children: accountRedeemSummaries
               .map((AccountRedeemSummary accountRedeemSummary) {
             bool shouldAddReportNotFoundExpiredButton = !isManualRedeem &&
                 (accountRedeemSummary.notFoundCodes.isNotEmpty ||
@@ -824,7 +794,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
                     children: [
                       _codesList(accountRedeemSummary.redeemedCodes, 'Redeemed',
@@ -877,6 +847,10 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                     .arrowshape_turn_up_right_circle_fill,
                               ),
                               label: Text('report'),
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: AppearanceManager().color.buttonText,
+                                backgroundColor: AppearanceManager().color.main,
+                              ),
                             ),
                         ],
                       ),
@@ -918,7 +892,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
               ],
             );
           }).toList(),
-          aspectRatio: width / height,
         ),
       ),
     );
@@ -964,7 +937,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
           },
           child: Text(
             'Back 👉🏼',
-            style: TextStyle(fontSize: 16.0),
+            style: AppearanceManager().buttonTextStyle,
           ),
         ),
       ],

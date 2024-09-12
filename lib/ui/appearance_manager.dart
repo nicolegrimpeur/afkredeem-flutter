@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:afk_redeem/data/preferences.dart';
 import 'package:afk_redeem/data/user_message.dart';
@@ -65,6 +66,7 @@ class AppearanceManager {
           dialogBackgroundOverlay: Color(0xFF372F57),
           dialogTitleText: Color(0xFFD888EE),
           dialogText: Color(0xFFC2C2C2),
+          buttonText: Color(0xFFFFFFFF),
           inactiveSwitch: Color(0xFFFFE89A),
           red: Colors.red,
           yellow: Colors.yellow,
@@ -94,6 +96,7 @@ class AppearanceManager {
           dialogBackgroundOverlay: Color(0xFFFFEFD6),
           dialogTitleText: Color(0xFF5E5E5E),
           dialogText: Color(0xFF242424),
+          buttonText: Color(0xFFFFFFFF),
           inactiveSwitch: Color(0xFFFFE89A),
           red: Color(0xFFE51C0B),
           yellow: Color(0xFFEEB900),
@@ -123,6 +126,7 @@ class AppearanceManager {
           dialogBackgroundOverlay: Color(0xFFFFC9C9),
           dialogTitleText: Color(0xFFB30000),
           dialogText: Color(0xFF424242),
+          buttonText: Color(0xFFFFFFFF),
           inactiveSwitch: Color(0xFFECB5B5),
           red: Color(0xFFE51C0B),
           yellow: Color(0xFFEEB900),
@@ -207,8 +211,8 @@ class AppearanceManager {
       unselectedWidgetColor: color.main,
       disabledColor: color.disabled,
       textTheme: TextTheme(
-        bodyText1: TextStyle(),
-        bodyText2: TextStyle(),
+        bodyLarge: TextStyle(),
+        bodyMedium: TextStyle(),
       ).apply(
         bodyColor: color.text,
       ),
@@ -245,11 +249,11 @@ class AppearanceManager {
       ),
       buttonTheme: ButtonThemeData(),
       textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(primary: color.main),
+        style: TextButton.styleFrom(foregroundColor: color.main),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          primary: color.main,
+          backgroundColor: color.main,
           shadowColor: Colors.grey.shade300,
           shape: new RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),
@@ -260,6 +264,31 @@ class AppearanceManager {
     return theme.copyWith(
       colorScheme: theme.colorScheme.copyWith(secondary: color.main),
     );
+  }
+
+  TextStyle get textStyle => TextStyle(
+    color: AppearanceManager().color.text,
+  );
+
+  TextStyle get mainTextStyle => TextStyle(
+    color: AppearanceManager().color.mainText,
+  );
+
+  TextStyle get buttonTextStyle => TextStyle(
+    color: AppearanceManager().color.buttonText,
+    fontSize: 16.0,
+  );
+
+  TextStyle get linkStyle => TextStyle(
+    color: AppearanceManager().color.mainText,
+    decoration: TextDecoration.underline,
+  );
+
+  GestureRecognizer tapGestureRecognizer(Uri uri) {
+    return new TapGestureRecognizer()
+      ..onTap = () {
+        launchUrl(uri);
+      };
   }
 }
 
@@ -302,6 +331,7 @@ class ColorPalette {
   final Color dialogBackgroundOverlay;
   final Color dialogTitleText;
   final Color dialogText;
+  final Color buttonText;
   final Color inactiveSwitch;
   final Color red;
   final Color yellow;
@@ -329,6 +359,7 @@ class ColorPalette {
     "dialogBackgroundOverlay": dialogBackgroundOverlay,
     "dialogTitleText": dialogTitleText,
     "dialogText": dialogText,
+    "buttonText": buttonText,
     "inactiveSwitch": inactiveSwitch,
     "red": red,
     "yellow": yellow,
@@ -357,6 +388,7 @@ class ColorPalette {
       required this.dialogBackgroundOverlay,
       required this.dialogTitleText,
       required this.dialogText,
+      required this.buttonText,
       required this.inactiveSwitch,
       required this.red,
       required this.yellow,

@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 
 const kRedeemApiVersion = 1;
 
-const kConnectTimeoutMilli = 5000;
-const kReceiveTimeoutMilli = 3000;
+const kConnectTimeoutMilli = Duration(seconds: 5);
+const kReceiveTimeoutMilli = Duration(seconds: 3);
 
 const kMinPasteManualRedemptionCodeLength = 5;
 const kMaxPasteManualRedemptionCodeLength = 15;
@@ -46,6 +46,7 @@ mixin kLinks {
   static const String afkRedeem = 'https://afkredeem.com/';
   static const String githubProject =
       'https://github.com/afkredeem/afkredeem-flutter';
+  static const String issuesGithubProject = githubProject + '/issues';
 
   static const _androidStoreLink =
       'https://play.google.com/store/apps/details?id=com.afkredeem';
@@ -82,17 +83,13 @@ mixin kUris {
   static const String afkRedeemApi = 'api.json';
 }
 
-mixin kFlutterHtmlUri {
-  static const String drawer = 'flutter_html/general/drawer.html';
-  static const String about = 'flutter_html/general/about.html';
-  static const String redeemNotSupported =
-      'flutter_html/general/redeem_not_supported.html';
-  static const String upgradeApp = 'flutter_html/general/redeem_upgrade.html';
+mixin kContact {
+  static const String email = 'afkredeem@gmail.com';
 }
 
-bool shouldReportDioError(DioError ex) {
+bool shouldReportDioError(DioException ex) {
   // report if not timeout & not ssl handshake error (CERTIFICATE_VERIFY_FAILED)
   // since can occur for the first time (especially for new afkredeem.com domain)
   // in private limited networks (work, school, etc.)
-  return ex.type != DioErrorType.connectTimeout && !(ex is HandshakeException);
+  return ex.type != DioExceptionType.connectionTimeout && !(ex is HandshakeException);
 }

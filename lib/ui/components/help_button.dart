@@ -4,22 +4,11 @@ import 'package:afk_redeem/ui/appearance_manager.dart';
 import 'package:afk_redeem/ui/components/carousel_dialog.dart';
 
 Widget helpButton({required Function() onPressed}) {
-  return Container(
-    width: 25.0,
-    child: TextButton(
-      style: ElevatedButton.styleFrom(
-        shape: CircleBorder(),
-        primary: AppearanceManager().color.main.withOpacity(0.2),
-      ),
+  return IconButton(
+      iconSize: 25.0,
       onPressed: onPressed,
-      child: Text(
-        '?',
-        style: TextStyle(
-          fontSize: 16.0,
-          color: AppearanceManager().color.appBarText.withOpacity(0.5),
-        ),
-      ),
-    ),
+      icon: Icon(Icons.help,
+          color: AppearanceManager().color.main.withOpacity(0.5))
   );
 }
 

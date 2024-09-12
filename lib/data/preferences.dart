@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:afk_redeem/data/consts.dart';
 import 'package:afk_redeem/data/redemption_code.dart';

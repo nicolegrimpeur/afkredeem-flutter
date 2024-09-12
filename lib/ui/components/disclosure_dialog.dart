@@ -8,11 +8,8 @@ import 'package:afk_redeem/ui/image_manager.dart';
 import 'package:afk_redeem/data/preferences.dart';
 
 Widget disclosureDialog(BuildContext context) {
-  return WillPopScope(
-    onWillPop: () {
-      // prevent close using 'back' button
-      return false as Future<bool>;
-    },
+  return PopScope(
+    canPop: false,
     child: AlertDialog(
       title: Text('Disclosure'),
       content: Column(
@@ -23,7 +20,7 @@ Widget disclosureDialog(BuildContext context) {
               children: [
                 TextSpan(
                   text: 'AFK Redeem is a fan-app and is not affiliated with ',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 TextSpan(
                   text: 'Lilith Games',
@@ -31,18 +28,18 @@ Widget disclosureDialog(BuildContext context) {
                 ),
                 TextSpan(
                   text: ' in any way.',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 TextSpan(text: '\n\n'),
                 TextSpan(
                   text:
                       'This app anonymously collects basic analytics & crash reports.',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 TextSpan(text: '\n\n'),
                 TextSpan(
                   text: 'For more information visit the github project.',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ],
             ),
@@ -72,7 +69,7 @@ Widget disclosureDialog(BuildContext context) {
                 ),
               ],
             ),
-            onTap: () => launch(kLinks.githubProject),
+            onTap: () => launchUrl(Uri.parse(kLinks.githubProject)),
             splashColor: AppearanceManager().color.mainBright,
           ),
           SizedBox(
@@ -88,7 +85,7 @@ Widget disclosureDialog(BuildContext context) {
                 },
                 child: Text(
                   'Get me out',
-                  style: TextStyle(fontSize: 16.0),
+                  style: AppearanceManager().buttonTextStyle,
                 ),
               ),
               ElevatedButton(
@@ -98,7 +95,7 @@ Widget disclosureDialog(BuildContext context) {
                 },
                 child: Text(
                   '     OK     ',
-                  style: TextStyle(fontSize: 16.0),
+                  style: AppearanceManager().buttonTextStyle,
                 ),
               ),
             ],
