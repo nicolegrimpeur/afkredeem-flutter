@@ -36,6 +36,7 @@ class ImageManager {
     'gifts/guild_coins': false,
     'gifts/labyrinth_tokens': false,
     'gifts/stargazing_cards': false,
+    'gifts/time_emblem': false,
     'gifts/hours/essence_2': false,
     'gifts/hours/essence_6': false,
     'gifts/hours/essence_8': false,
@@ -68,6 +69,8 @@ class ImageManager {
   }
 
   Image get(String name) {
+    name = name.toLowerCase().replaceAll(' ', '_');
+
     if (_images.containsKey(name)) {
       return _images[name]!;
     }
