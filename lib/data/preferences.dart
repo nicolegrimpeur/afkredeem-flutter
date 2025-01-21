@@ -19,7 +19,6 @@ class Preferences {
   static const String _kDefaultDate = '2222-01-01';
   static const String _kIsHypogean = 'isHypogean';
   static const String _kUserID = 'userID';
-  static const String _kShowAds = 'showAds';
   static const String _kShowBuyMeCoffeeLink = 'showBuyMeCoffeeLink';
   static const String _kWasDisclosureApproved = 'wasDisclosureApproved';
   static const String _kWasFirstConnectionSuccessful =
@@ -47,7 +46,6 @@ class Preferences {
 
   bool _isHypogean;
   String _userID;
-  bool _showAds;
   bool _showBuyMeCoffeeLink;
   bool _wasDisclosureApproved;
   bool _wasFirstConnectionSuccessful;
@@ -65,7 +63,6 @@ class Preferences {
 
   bool get isHypogean => _isHypogean;
   String get userID => _userID;
-  bool get showAds => _showAds;
   bool get showBuyMeCoffeeLink => _showBuyMeCoffeeLink;
   bool get wasDisclosureApproved => _wasDisclosureApproved;
   bool get wasFirstConnectionSuccessful => _wasFirstConnectionSuccessful;
@@ -87,11 +84,6 @@ class Preferences {
     forceChristmasTheme = false;
     _isHypogean = value;
     _prefs.setBool(_kIsHypogean, value);
-  }
-
-  set showAds(bool value) {
-    _showAds = value;
-    _prefs.setBool(_kShowAds, value);
   }
 
   set showBuyMeCoffeeLink(bool value) {
@@ -173,7 +165,6 @@ class Preferences {
   Preferences._create(this._prefs, this._packageInfo)
       : _isHypogean = _prefs.getBool(_kIsHypogean) ?? true,
         _userID = _prefs.getString(_kUserID) ?? '',
-        _showAds = _prefs.getBool(_kShowAds) ?? false,
         _showBuyMeCoffeeLink = _prefs.getBool(_kShowBuyMeCoffeeLink) ?? false,
         _wasDisclosureApproved =
             _prefs.getBool(_kWasDisclosureApproved) ?? false,
@@ -223,7 +214,6 @@ class Preferences {
       context: 'Preferences::updateConfigData',
       json: configData,
     );
-    showAds = jsonReader.read(_kShowAds);
     showBuyMeCoffeeLink = jsonReader.read(_kShowBuyMeCoffeeLink);
     redeemFrequencyLimitMilli = jsonReader.read(_kRedeemFrequencyLimitMilli);
     redeemApiVersion = jsonReader.read(_kRedeemApiVersion);
