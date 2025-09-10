@@ -451,7 +451,7 @@ class _MainScreenState extends State<MainScreen>
                                             Switch(
                                                 value: AppearanceManager()
                                                     .isHypogean,
-                                                activeColor: AppearanceManager()
+                                                activeThumbColor: AppearanceManager()
                                                     .color
                                                     .main,
                                                 inactiveTrackColor:

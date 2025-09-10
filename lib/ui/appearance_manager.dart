@@ -237,7 +237,7 @@ class AppearanceManager {
         selectionColor: color.mainBright,
         selectionHandleColor: color.main,
       ),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: color.dialogBackground,
         titleTextStyle: TextStyle(
           fontSize: 20.0,

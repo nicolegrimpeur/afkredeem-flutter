@@ -23,6 +23,7 @@ dependencies:
   package_info_plus: ^8.0.2
   flutter_animation_progress_bar: ^2.0.1
 
+  cookie_jar: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
