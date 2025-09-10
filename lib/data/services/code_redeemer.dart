@@ -89,7 +89,8 @@ class CodeRedeemer {
     {
         "game": "afk",
         "uid": $uid,
-        "code": "$verificationCode"
+        "code": "$verificationCode",
+        "hgameServerType": "normal"
     }
     ''';
     Response response =
@@ -116,7 +117,8 @@ class CodeRedeemer {
     String postData = '''
     {
         "game": "afk",
-        "uid": $uid
+        "uid": $uid,
+        "hgameServerType": "normal"
     }
     ''';
     Response response = await _sendRequest(kUris.usersUri, postData: postData);
@@ -197,7 +199,8 @@ class CodeRedeemer {
           "cdkey": "${redemptionCode.code}",
           "game": "afk",
           "type": "cdkey_web",
-          "uid": ${account.uid}
+          "uid": ${account.uid},
+          "hgameServerType": "normal"
       }
       ''';
       Response response = await _sendRequest(kUris.consumeUri,
