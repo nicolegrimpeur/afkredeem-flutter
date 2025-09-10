@@ -1,10 +1,7 @@
-import 'dart:io';
 import 'dart:math';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
@@ -24,14 +21,6 @@ enum RedeemDialogState {
   running,
   summary,
   error,
-}
-
-enum AdLoadingStatus {
-  dontShowAds,
-  init,
-  loading,
-  success,
-  failure,
 }
 
 class RedeemDialog extends StatefulWidget {
@@ -62,17 +51,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
   TextEditingController verificationCodeController = TextEditingController();
   final tooltipKey = GlobalKey<State<Tooltip>>();
 
-  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  static final AdRequest adRequest = AdRequest(
-    keywords: kAdsKeywords,
-    nonPersonalizedAds: true,
-  );
-  BannerAd? _adBanner;
-  late AdLoadingStatus _adBannerLoadingStatus = Preferences().showAds
-      ? AdLoadingStatus.init
-      : AdLoadingStatus.dontShowAds;
-  late Widget _adWidget = _createAdWidget();
-
   late bool isManualRedeem = widget.redemptionCodes == null;
   late CodeRedeemer codeRedeemer;
   late RedeemHandlers _redeemHandlers = RedeemHandlers(
@@ -95,7 +73,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
   bool showContinueButton = false;
 
   void reset() {
-    _createAnchoredBanner(context);
     setState(() {
       accounts = [];
       selectedAccount = null;
@@ -113,13 +90,11 @@ class _RedeemDialogState extends State<RedeemDialog> {
   @override
   void initState() {
     super.initState();
-    _createAnchoredBanner(context);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _adBanner?.dispose();
   }
 
   void _redeemRunning() {
@@ -152,12 +127,8 @@ class _RedeemDialogState extends State<RedeemDialog> {
       await Future.delayed(
           kProgressBarAnimatedDuration + kProgressBarExtraWaitAnimationFinish);
       setState(() {
-        if (_adBannerLoadingStatus == AdLoadingStatus.success) {
-          showContinueButton = true;
-        } else {
-          // skip summary continue button and send directly to summary screen
-          redeemDialogState = RedeemDialogState.summary;
-        }
+        // skip summary continue button and send directly to summary screen
+        redeemDialogState = RedeemDialogState.summary;
       });
     }
   }
@@ -174,16 +145,12 @@ class _RedeemDialogState extends State<RedeemDialog> {
     setState(() {
       accountRedeemSummaries = redeemSummaries;
     });
-    analytics.logEvent(name: 'redeem_completed');
     await Future.delayed(
         kProgressBarAnimatedDuration + kProgressBarExtraWaitAnimationFinish);
     widget.redeemCompletedHandler(accountRedeemSummaries);
   }
 
   void _redeemError(UserMessage errorMessage) {
-    if (errorMessage == UserMessage.verificationFailed) {
-      analytics.logEvent(name: 'redeem_verification_failed');
-    }
     this.errorMessage = errorMessage;
     setState(() {
       redeemDialogState = RedeemDialogState.error;
@@ -243,10 +210,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
         handlers: _redeemHandlers,
       );
       codeRedeemer.redeem();
-      analytics.logEvent(
-        name: isManualRedeem ? 'redeem_manual_code' : 'redeem_codes',
-        parameters: {'codes': redemptionCodes.length},
-      );
     },
     style: ElevatedButton.styleFrom(
       minimumSize: Size(40, 40),
@@ -384,58 +347,8 @@ class _RedeemDialogState extends State<RedeemDialog> {
     );
   }
 
-  Future<void> _createAnchoredBanner(BuildContext context) async {
-    if (_adBannerLoadingStatus == AdLoadingStatus.dontShowAds ||
-        _adBannerLoadingStatus == AdLoadingStatus.loading) {
-      return;
-    }
-    _adBannerLoadingStatus = AdLoadingStatus.loading;
-
-    final BannerAd banner = BannerAd(
-      size: AdSize(
-        height: (0.8 * AdSize.mediumRectangle.height).round(),
-        width: (0.8 * AdSize.mediumRectangle.width).round(),
-      ),
-      request: adRequest,
-      adUnitId: Platform.isAndroid
-          ? 'ca-app-pub-7888384607520581/1024667510'
-          : 'ca-app-pub-7888384607520581/4701872851',
-      listener: BannerAdListener(
-        onAdLoaded: (Ad ad) {
-          setState(() {
-            _adBanner = ad as BannerAd?;
-          });
-          _adBannerLoadingStatus = AdLoadingStatus.success;
-        },
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          _adBannerLoadingStatus = AdLoadingStatus.failure;
-          analytics.logEvent(name: 'ad_failed_to_load');
-          ad.dispose();
-        },
-        onAdOpened: (Ad ad) => analytics.logEvent(name: 'ad_opened'),
-      ),
-    );
-    return banner.load();
-  }
-
   Widget _createAdWidget() {
-    if (_adBanner == null) {
-      return Container();
-    }
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          color: AppearanceManager().color.dialogBackground,
-          width: _adBanner!.size.width.toDouble(),
-          height: _adBanner!.size.height.toDouble(),
-          child: AdWidget(ad: _adBanner!),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-      ],
-    );
+    return Container();
   }
 
   AlertDialog fillFormDialog() {
@@ -579,7 +492,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _adWidget,
           if (selectAccount)
             ListTile(
               minLeadingWidth: 0.0,
@@ -674,11 +586,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
               children: [
                 SizedBox(height: 9),
                 Container(
-                  width: _adBanner != null
-                      ? 0.8 *
-                          _adBanner!.size.width
-                              .toDouble() // prevent weird progress bar from dancing
-                      : 200,
+                  width: 200,
                   child: Column(
                     children: [
                       Text(

@@ -16,12 +16,6 @@ const kDefaultRedeemApiVersion = 1;
 const kDefaultAppInStoreApiVersionSupport = 1;
 
 const String kAfkArenaStorePackage = 'com.lilithgame.hgame.gp';
-const List<String> kAdsKeywords = [
-  'AFK Arena',
-  'mobile games',
-  'gaming',
-  'rpg'
-];
 
 const int kManualRedeemApiBrutusMessageId = 1;
 
